@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Env / secrets (in case you add them later)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Vercel
+.vercel/
