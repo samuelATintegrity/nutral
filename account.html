@@ -121,13 +121,13 @@
       input[type="text"] {
         width: 100%;
         max-width: 360px;
-        padding: 12px 14px;
+        padding: 12px 20px;
         font-family: inherit;
         font-size: 15px;
         color: var(--text);
         background: var(--bg);
         border: 1px solid var(--divider);
-        border-radius: 8px;
+        border-radius: 999px;
         transition: border-color 0.15s ease, box-shadow 0.15s ease;
       }
       input:focus {
@@ -136,11 +136,11 @@
         box-shadow: 0 0 0 3px var(--accent-soft);
       }
       button {
-        padding: 12px 20px;
+        padding: 12px 24px;
         background: var(--accent);
         color: var(--bg);
         border: none;
-        border-radius: 8px;
+        border-radius: 999px;
         font-family: inherit;
         font-size: 15px;
         font-weight: 500;
@@ -165,33 +165,34 @@
         color: var(--bg);
       }
 
+      /* Stacked topic list with toggle switches */
       .topic-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
+        flex-direction: column;
         gap: 10px;
         margin-top: 8px;
-      }
-      @media (min-width: 520px) {
-        .topic-grid { grid-template-columns: repeat(3, 1fr); }
+        max-width: 420px;
       }
       .topic-option {
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 12px 14px;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 22px;
         background: var(--bg);
         border: 1px solid var(--divider);
-        border-radius: 8px;
+        border-radius: 999px;
         cursor: pointer;
         user-select: none;
         transition: border-color 0.15s ease, background 0.15s ease;
       }
       .topic-option:hover { border-color: var(--accent); }
       .topic-option input[type="checkbox"] {
-        width: 18px;
-        height: 18px;
-        accent-color: var(--accent);
-        margin: 0;
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        width: 0;
+        height: 0;
       }
       .topic-option:has(input:checked) {
         border-color: var(--accent);
@@ -199,8 +200,39 @@
       }
       .topic-label {
         font-family: var(--serif);
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 17px;
+        font-weight: 400;
+      }
+      /* iOS-style toggle */
+      .toggle {
+        position: relative;
+        width: 42px;
+        height: 24px;
+        background: var(--divider);
+        border-radius: 999px;
+        flex-shrink: 0;
+        transition: background 0.2s ease;
+      }
+      .toggle::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        background: var(--bg);
+        border-radius: 50%;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+        transition: transform 0.2s ease;
+      }
+      .topic-option input[type="checkbox"]:checked ~ .toggle {
+        background: var(--accent);
+      }
+      .topic-option input[type="checkbox"]:checked ~ .toggle::after {
+        transform: translateX(18px);
+      }
+      .topic-option input[type="checkbox"]:focus-visible ~ .toggle {
+        box-shadow: 0 0 0 3px var(--accent-soft);
       }
 
       .row-actions {
@@ -295,11 +327,31 @@
           <h2>Your topics</h2>
           <p>Your brief only covers what you pick.</p>
           <div class="topic-grid" id="acc-topics">
-            <label class="topic-option"><input type="checkbox" value="POLITICS" /><span class="topic-label">Politics</span></label>
-            <label class="topic-option"><input type="checkbox" value="BUSINESS" /><span class="topic-label">Business</span></label>
-            <label class="topic-option"><input type="checkbox" value="FINANCE" /><span class="topic-label">Finance</span></label>
-            <label class="topic-option"><input type="checkbox" value="MOVIES" /><span class="topic-label">Movies</span></label>
-            <label class="topic-option"><input type="checkbox" value="AI" /><span class="topic-label">AI</span></label>
+            <label class="topic-option">
+              <span class="topic-label">Politics</span>
+              <input type="checkbox" value="POLITICS" />
+              <span class="toggle" aria-hidden="true"></span>
+            </label>
+            <label class="topic-option">
+              <span class="topic-label">Business</span>
+              <input type="checkbox" value="BUSINESS" />
+              <span class="toggle" aria-hidden="true"></span>
+            </label>
+            <label class="topic-option">
+              <span class="topic-label">Finance</span>
+              <input type="checkbox" value="FINANCE" />
+              <span class="toggle" aria-hidden="true"></span>
+            </label>
+            <label class="topic-option">
+              <span class="topic-label">Movies</span>
+              <input type="checkbox" value="MOVIES" />
+              <span class="toggle" aria-hidden="true"></span>
+            </label>
+            <label class="topic-option">
+              <span class="topic-label">AI</span>
+              <input type="checkbox" value="AI" />
+              <span class="toggle" aria-hidden="true"></span>
+            </label>
           </div>
           <div class="row-actions">
             <button type="button" data-save="topics">Save topics</button>
