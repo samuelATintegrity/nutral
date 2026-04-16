@@ -255,6 +255,125 @@
         font-size: 15px;
       }
 
+      /* ---------- multi-step signup ---------- */
+      /* Make sure [hidden] wins over any `display` value we set later */
+      [hidden] {
+        display: none !important;
+      }
+      .signup-steps {
+        max-width: 560px;
+      }
+      .signup-step {
+        animation: step-fade 0.3s ease;
+      }
+      @keyframes step-fade {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .step-2 {
+        display: grid;
+        gap: 24px;
+      }
+      .step-field {
+        display: flex;
+        flex-direction: column;
+      }
+      .step-label {
+        font-family: var(--serif);
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--text);
+        margin: 0 0 10px 0;
+        letter-spacing: -0.01em;
+      }
+      .step-sublabel {
+        font-size: 14px;
+        color: var(--text-muted);
+        margin: -4px 0 14px 0;
+      }
+      .step-field input[type="text"] {
+        padding: 14px 16px;
+        font-family: inherit;
+        font-size: 16px;
+        color: var(--text);
+        background: var(--bg-elev);
+        border: 1px solid var(--divider);
+        border-radius: var(--radius);
+        max-width: 360px;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .step-field input[type="text"]:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+      }
+      .topic-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      @media (min-width: 520px) {
+        .topic-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      .topic-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 16px;
+        background: var(--bg-elev);
+        border: 1px solid var(--divider);
+        border-radius: var(--radius);
+        cursor: pointer;
+        user-select: none;
+        transition: border-color 0.15s ease, background 0.15s ease;
+      }
+      .topic-option:hover {
+        border-color: var(--accent);
+      }
+      .topic-option input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--accent);
+        cursor: pointer;
+        margin: 0;
+        flex-shrink: 0;
+      }
+      .topic-option:has(input:checked) {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+      }
+      .topic-label {
+        font-family: var(--serif);
+        font-size: 17px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .step-submit {
+        padding: 14px 24px;
+        background: var(--accent);
+        color: var(--bg);
+        border: none;
+        border-radius: var(--radius);
+        font-family: inherit;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.15s ease, transform 0.05s ease;
+        justify-self: start;
+      }
+      .step-submit:hover {
+        background: var(--accent-dark);
+      }
+      .step-submit:active {
+        transform: translateY(1px);
+      }
+      .step-submit:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+
       /* ---------- eyebrow / section heading ---------- */
       .eyebrow {
         text-transform: uppercase;
@@ -608,18 +727,76 @@
             morning — personalized to you. Calm, curated, and built to keep your mornings sane.
           </p>
 
-          <form class="signup-form" data-form="hero" novalidate>
-            <input
-              type="email"
-              name="email"
-              placeholder="your@email.com"
-              aria-label="Email address"
-              required
-              autocomplete="email"
-            />
-            <button type="submit">Join the waitlist</button>
-          </form>
-          <p class="form-note">
+          <!-- STEP 1: Email -->
+          <div class="signup-steps" data-signup="hero">
+            <form class="signup-form signup-step step-1" data-step="1" novalidate>
+              <input
+                type="email"
+                name="email"
+                placeholder="your@email.com"
+                aria-label="Email address"
+                required
+                autocomplete="email"
+              />
+              <button type="submit">Continue</button>
+            </form>
+
+            <!-- STEP 2: Name + topics (revealed after step 1) -->
+            <form class="signup-step step-2" data-step="2" hidden novalidate>
+              <div class="step-field">
+                <label class="step-label" for="hero-name">What should we call you?</label>
+                <input
+                  id="hero-name"
+                  type="text"
+                  name="first_name"
+                  placeholder="First name"
+                  aria-label="First name"
+                  required
+                  maxlength="50"
+                  autocomplete="given-name"
+                />
+              </div>
+
+              <div class="step-field">
+                <p class="step-label">Pick your topics</p>
+                <p class="step-sublabel">Your brief will only cover what you pick. Change anytime.</p>
+                <div class="topic-grid">
+                  <label class="topic-option">
+                    <input type="checkbox" name="topic" value="POLITICS" />
+                    <span class="topic-label">Politics</span>
+                  </label>
+                  <label class="topic-option">
+                    <input type="checkbox" name="topic" value="BUSINESS" />
+                    <span class="topic-label">Business</span>
+                  </label>
+                  <label class="topic-option">
+                    <input type="checkbox" name="topic" value="FINANCE" />
+                    <span class="topic-label">Finance</span>
+                  </label>
+                  <label class="topic-option">
+                    <input type="checkbox" name="topic" value="MOVIES" />
+                    <span class="topic-label">Movies</span>
+                  </label>
+                  <label class="topic-option">
+                    <input type="checkbox" name="topic" value="AI" />
+                    <span class="topic-label">AI</span>
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" class="step-submit">Save my preferences</button>
+            </form>
+
+            <!-- STEP 3: Success (shown after step 2) -->
+            <div class="signup-step step-3" data-step="3" hidden>
+              <div class="form-success-state">
+                <h3>You're all set<span data-name-slot></span>.</h3>
+                <p>Your first brief arrives <span data-next-weekday>Monday</span> morning.</p>
+              </div>
+            </div>
+          </div>
+
+          <p class="form-note" data-show-on-step="1">
             <span class="badge">Always free</span>Unsubscribe anytime.
           </p>
           <p class="form-message" data-message="hero" role="status" aria-live="polite"></p>
@@ -830,7 +1007,7 @@
               required
               autocomplete="email"
             />
-            <button type="submit">Join the waitlist</button>
+            <button type="submit">Continue</button>
           </form>
           <p class="form-note" style="margin-top: 20px; text-align: center;">
             <span class="badge">Always free</span>Unsubscribe anytime.
@@ -880,6 +1057,9 @@
 
       const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+      // Remember email between step 1 and step 2
+      let currentEmail = null;
+
       function setMessage(formKey, text, type) {
         const el = document.querySelector(`[data-message="${formKey}"]`);
         if (!el) return;
@@ -887,20 +1067,45 @@
         el.className = "form-message" + (type ? " " + type : "");
       }
 
-      function showSuccess(form) {
-        const card = document.createElement("div");
-        card.className = "form-success-state";
-        card.innerHTML = `
-          <h3>You're in.</h3>
-          <p>We'll email you as soon as your first brief is ready. Welcome to Nūtral.</p>
-        `;
-        form.replaceWith(card);
+      function showStep(stepNumber) {
+        document.querySelectorAll('[data-signup="hero"] .signup-step').forEach((el) => {
+          el.hidden = el.dataset.step !== String(stepNumber);
+        });
+        // Hide the "Always free" note once we're past step 1
+        document.querySelectorAll('[data-show-on-step]').forEach((el) => {
+          el.hidden = el.dataset.showOnStep !== String(stepNumber);
+        });
       }
 
-      async function handleSubmit(event) {
+      function computeNextWeekday() {
+        const now = new Date();
+        const day = now.getDay(); // 0 = Sunday
+        const hour = now.getHours();
+        // If today is a weekday and it's still morning (before 8 AM), first brief is "tomorrow"-ish;
+        // otherwise next weekday.
+        let daysToAdd = 1;
+        const dow = (day + daysToAdd) % 7;
+        if (day === 5) daysToAdd = 3; // Fri → Mon
+        if (day === 6) daysToAdd = 2; // Sat → Mon
+        if (day === 0) daysToAdd = 1; // Sun → Mon
+        const target = new Date(now);
+        target.setDate(now.getDate() + daysToAdd);
+        return target.toLocaleDateString(undefined, { weekday: "long" });
+      }
+
+      function showSuccess(firstName) {
+        showStep(3);
+        const nameSlot = document.querySelector("[data-name-slot]");
+        if (nameSlot) nameSlot.textContent = firstName ? `, ${firstName}` : "";
+        const weekdaySlot = document.querySelector("[data-next-weekday]");
+        if (weekdaySlot) weekdaySlot.textContent = computeNextWeekday();
+      }
+
+      // STEP 1: Email capture → creates or finds the user row
+      async function handleStep1(event) {
         event.preventDefault();
         const form = event.currentTarget;
-        const formKey = form.dataset.form;
+        const formKey = form.closest("[data-form]")?.dataset.form || "hero";
         const input = form.querySelector('input[type="email"]');
         const button = form.querySelector("button");
         const email = input.value.trim().toLowerCase();
@@ -915,36 +1120,36 @@
 
         button.disabled = true;
         const originalText = button.textContent;
-        button.textContent = "Joining…";
+        button.textContent = "…";
+        currentEmail = email;
 
         try {
           if (!supabaseClient) {
-            // Dev mode — no Supabase configured yet
-            console.log("[Nutral dev] waitlist signup:", email);
-            await new Promise((r) => setTimeout(r, 500));
-            showSuccess(form);
+            console.log("[Nutral dev] step 1 signup:", email);
+            await new Promise((r) => setTimeout(r, 300));
+            showStep(2);
             return;
           }
 
-          const { error } = await supabaseClient.from("waitlist").insert({ email });
+          // Insert a pending row (ignore conflict — we want to reveal step 2 either way).
+          const { error } = await supabaseClient
+            .from("users")
+            .insert({ email, status: "pending" });
 
+          if (error && error.code === "23505") {
+            // Already exists. Check if active.
+            // RLS blocks select from anon, so we can't read. Just reveal step 2 —
+            // the update in step 2 will succeed if still pending, or bounce friendly if active.
+            showStep(2);
+            return;
+          }
           if (error) {
-            // Postgres unique_violation = 23505
-            if (error.code === "23505") {
-              setMessage(
-                formKey,
-                "You're already on the list — check your inbox for updates.",
-                "success"
-              );
-              input.value = "";
-            } else {
-              console.error(error);
-              setMessage(formKey, "Something went wrong. Please try again.", "error");
-            }
+            console.error(error);
+            setMessage(formKey, "Something went wrong. Please try again.", "error");
             return;
           }
 
-          showSuccess(form);
+          showStep(2);
         } catch (err) {
           console.error(err);
           setMessage(formKey, "Something went wrong. Please try again.", "error");
@@ -954,9 +1159,102 @@
         }
       }
 
-      document.querySelectorAll(".signup-form").forEach((form) => {
-        form.addEventListener("submit", handleSubmit);
-      });
+      // STEP 2: Name + topics → updates the pending row to active
+      async function handleStep2(event) {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const button = form.querySelector("button[type='submit']");
+        const nameInput = form.querySelector('input[name="first_name"]');
+        const topicInputs = form.querySelectorAll('input[name="topic"]:checked');
+
+        const firstName = (nameInput.value || "").trim();
+        const topics = Array.from(topicInputs).map((i) => i.value);
+
+        setMessage("hero", "", null);
+
+        if (!firstName) {
+          setMessage("hero", "Please enter your first name.", "error");
+          nameInput.focus();
+          return;
+        }
+        if (topics.length === 0) {
+          setMessage("hero", "Pick at least one topic to get started.", "error");
+          return;
+        }
+
+        button.disabled = true;
+        const originalText = button.textContent;
+        button.textContent = "Saving…";
+
+        try {
+          if (!supabaseClient || !currentEmail) {
+            console.log("[Nutral dev] step 2 save:", { firstName, topics });
+            await new Promise((r) => setTimeout(r, 300));
+            showSuccess(firstName);
+            return;
+          }
+
+          // Update the pending row in place. RLS policy only allows updating rows
+          // where status='pending', so already-active rows are silently ignored
+          // (which is fine — they're still subscribed, no harm done).
+          // We intentionally do NOT use .select() here because that would require
+          // a SELECT RLS policy for anon, which would leak account existence.
+          const { error } = await supabaseClient
+            .from("users")
+            .update({ first_name: firstName, topics, status: "active" })
+            .eq("email", currentEmail)
+            .eq("status", "pending");
+
+          if (error) {
+            console.error(error);
+            setMessage("hero", "Something went wrong. Please try again.", "error");
+            return;
+          }
+
+          showSuccess(firstName);
+        } catch (err) {
+          console.error(err);
+          setMessage("hero", "Something went wrong. Please try again.", "error");
+        } finally {
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      }
+
+      // Wire it up
+      document
+        .querySelector('[data-signup="hero"] [data-step="1"]')
+        ?.addEventListener("submit", handleStep1);
+      document
+        .querySelector('[data-signup="hero"] [data-step="2"]')
+        ?.addEventListener("submit", handleStep2);
+
+      // Footer form — kick off the same step-1 flow then smooth-scroll to hero
+      document
+        .querySelector('form[data-form="footer"]')
+        ?.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const input = event.currentTarget.querySelector('input[type="email"]');
+          const email = (input.value || "").trim().toLowerCase();
+          if (!EMAIL_RE.test(email)) {
+            setMessage("footer", "Please enter a valid email address.", "error");
+            return;
+          }
+
+          // Mirror into the hero step-1 input and submit it
+          const heroEmailInput = document.querySelector(
+            '[data-signup="hero"] [data-step="1"] input[type="email"]'
+          );
+          if (heroEmailInput) heroEmailInput.value = email;
+
+          document.getElementById("join")?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+          const heroForm = document.querySelector('[data-signup="hero"] [data-step="1"]');
+          if (heroForm) {
+            // dispatch a real submit event so the handler runs
+            heroForm.requestSubmit();
+          }
+        });
     </script>
   </body>
 </html>

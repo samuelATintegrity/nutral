@@ -1,0 +1,29 @@
+# Nutral RSS feeds (CATEGORY|URL)
+# Five launch categories. Add more as we expand.
+
+# Politics / World Policy / US News
+POLITICS|http://feeds.bbci.co.uk/news/world/rss.xml
+POLITICS|https://feeds.npr.org/1001/rss.xml
+POLITICS|https://rss.nytimes.com/services/xml/rss/nyt/World.xml
+POLITICS|https://feeds.reuters.com/Reuters/worldNews
+
+# Business
+BUSINESS|http://feeds.bbci.co.uk/news/business/rss.xml
+BUSINESS|https://rss.nytimes.com/services/xml/rss/nyt/Business.xml
+BUSINESS|https://feeds.reuters.com/reuters/businessNews
+BUSINESS|https://feeds.bloomberg.com/markets/news.rss
+
+# Finance (Fed, rates, inflation, mortgage)
+FINANCE|https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=20910258
+FINANCE|https://www.federalreserve.gov/feeds/press_all.xml
+FINANCE|https://www.calculatedriskblog.com/feeds/posts/default?alt=rss
+
+# Movies (US production announcements, greenlights, major director/actor attachments)
+MOVIES|https://variety.com/feed/
+MOVIES|https://www.hollywoodreporter.com/feed/
+MOVIES|https://deadline.com/feed/
+
+# AI (model releases, capability breakthroughs)
+AI|https://www.theverge.com/ai-artificial-intelligence/rss/index.xml
+AI|https://techcrunch.com/category/artificial-intelligence/feed/
+AI|https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml

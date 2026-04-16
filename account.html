@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Account — Nūtral</title>
+    <meta name="robots" content="noindex" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%233A5A40'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' font-family='serif' font-size='40' font-weight='600' fill='%23F7F4EC' dominant-baseline='middle'%3EN%3C/text%3E%3C/svg%3E"
+    />
+
+    <style>
+      :root {
+        --bg: #f7f4ec;
+        --bg-elev: #fcfaf3;
+        --text: #1a1a1a;
+        --text-muted: #5c5a55;
+        --accent: #3a5a40;
+        --accent-dark: #2c4631;
+        --accent-soft: rgba(58, 90, 64, 0.08);
+        --divider: #d9d3c4;
+        --error: #9c2a2a;
+        --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+        --sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+      }
+      a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+      a:hover { color: var(--accent-dark); }
+
+      .container {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0 40px 0;
+      }
+      .wordmark {
+        font-family: var(--serif);
+        font-weight: 600;
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        text-decoration: none;
+      }
+      header nav a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 14px;
+        margin-left: 16px;
+      }
+      header nav a:hover { color: var(--text); }
+
+      h1 {
+        font-family: var(--serif);
+        font-size: clamp(28px, 4vw, 40px);
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        margin: 0 0 8px 0;
+      }
+      h2 {
+        font-family: var(--serif);
+        font-size: 22px;
+        font-weight: 500;
+        margin: 0 0 12px 0;
+        letter-spacing: -0.01em;
+      }
+      p {
+        margin: 0 0 12px 0;
+        color: var(--text-muted);
+      }
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--accent);
+        margin: 0 0 8px 0;
+      }
+
+      .card {
+        background: var(--bg-elev);
+        border: 1px solid var(--divider);
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 24px;
+      }
+
+      label {
+        display: block;
+        font-family: var(--serif);
+        font-size: 18px;
+        font-weight: 500;
+        color: var(--text);
+        margin-bottom: 10px;
+      }
+      input[type="email"],
+      input[type="text"] {
+        width: 100%;
+        max-width: 360px;
+        padding: 12px 14px;
+        font-family: inherit;
+        font-size: 15px;
+        color: var(--text);
+        background: var(--bg);
+        border: 1px solid var(--divider);
+        border-radius: 8px;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+      }
+      button {
+        padding: 12px 20px;
+        background: var(--accent);
+        color: var(--bg);
+        border: none;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+      button:hover { background: var(--accent-dark); }
+      button:disabled { opacity: 0.6; cursor: wait; }
+      button.secondary {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--divider);
+      }
+      button.secondary:hover { background: var(--bg); }
+      button.danger {
+        background: transparent;
+        color: var(--error);
+        border: 1px solid var(--error);
+      }
+      button.danger:hover {
+        background: var(--error);
+        color: var(--bg);
+      }
+
+      .topic-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 8px;
+      }
+      @media (min-width: 520px) {
+        .topic-grid { grid-template-columns: repeat(3, 1fr); }
+      }
+      .topic-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        background: var(--bg);
+        border: 1px solid var(--divider);
+        border-radius: 8px;
+        cursor: pointer;
+        user-select: none;
+        transition: border-color 0.15s ease, background 0.15s ease;
+      }
+      .topic-option:hover { border-color: var(--accent); }
+      .topic-option input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--accent);
+        margin: 0;
+      }
+      .topic-option:has(input:checked) {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+      }
+      .topic-label {
+        font-family: var(--serif);
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .row-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 20px;
+      }
+      .message {
+        margin-top: 12px;
+        font-size: 14px;
+      }
+      .message.success { color: var(--accent); font-weight: 500; }
+      .message.error { color: var(--error); }
+
+      .status-pill {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .status-pill.active { background: var(--accent-soft); color: var(--accent); }
+      .status-pill.paused { background: #f4e4b8; color: #6b5a15; }
+      .status-pill.unsubscribed { background: #f3d7d7; color: #7a2828; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a href="/" class="wordmark">Nūtral</a>
+        <nav>
+          <a href="/" id="nav-home">Home</a>
+          <a href="#" id="nav-signout" hidden>Sign out</a>
+        </nav>
+      </header>
+
+      <!-- STATE: sign-in (magic link request) -->
+      <section id="state-signin">
+        <p class="eyebrow">Account</p>
+        <h1>Sign in to manage your subscription.</h1>
+        <p>We'll email you a one-time sign-in link. No passwords.</p>
+
+        <div class="card" style="max-width:520px;margin-top:20px;">
+          <form id="signin-form" novalidate>
+            <label for="signin-email">Email</label>
+            <input
+              id="signin-email"
+              type="email"
+              name="email"
+              placeholder="your@email.com"
+              required
+              autocomplete="email"
+            />
+            <div class="row-actions">
+              <button type="submit">Email me a sign-in link</button>
+            </div>
+          </form>
+          <p class="message" id="signin-message" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <!-- STATE: sign-in sent (confirmation) -->
+      <section id="state-signin-sent" hidden>
+        <p class="eyebrow">Check your inbox</p>
+        <h1>Sign-in link sent.</h1>
+        <p>Open the email we just sent and click the "Sign in to Nūtral" link. It'll bring you right back here.</p>
+        <p>Didn't get it? Check spam, or <a href="#" id="try-again">try again</a>.</p>
+      </section>
+
+      <!-- STATE: authenticated — manage prefs -->
+      <section id="state-account" hidden>
+        <p class="eyebrow">Your account</p>
+        <h1 id="greeting">Welcome back.</h1>
+        <p>Signed in as <strong id="display-email">…</strong> <span id="status-pill" class="status-pill active">Active</span></p>
+
+        <div class="card">
+          <h2>Your name</h2>
+          <p>Used to personalize your audio brief.</p>
+          <label for="acc-first-name">First name</label>
+          <input id="acc-first-name" type="text" maxlength="50" />
+          <div class="row-actions">
+            <button type="button" data-save="name">Save name</button>
+          </div>
+          <p class="message" data-msg="name"></p>
+        </div>
+
+        <div class="card">
+          <h2>Your topics</h2>
+          <p>Your brief only covers what you pick.</p>
+          <div class="topic-grid" id="acc-topics">
+            <label class="topic-option"><input type="checkbox" value="POLITICS" /><span class="topic-label">Politics</span></label>
+            <label class="topic-option"><input type="checkbox" value="BUSINESS" /><span class="topic-label">Business</span></label>
+            <label class="topic-option"><input type="checkbox" value="FINANCE" /><span class="topic-label">Finance</span></label>
+            <label class="topic-option"><input type="checkbox" value="MOVIES" /><span class="topic-label">Movies</span></label>
+            <label class="topic-option"><input type="checkbox" value="AI" /><span class="topic-label">AI</span></label>
+          </div>
+          <div class="row-actions">
+            <button type="button" data-save="topics">Save topics</button>
+          </div>
+          <p class="message" data-msg="topics"></p>
+        </div>
+
+        <div class="card">
+          <h2>Subscription</h2>
+          <p>You can pause briefs temporarily or unsubscribe entirely.</p>
+          <div class="row-actions">
+            <button type="button" class="secondary" data-action="toggle-pause">Pause briefs</button>
+            <button type="button" class="danger" data-action="unsubscribe">Unsubscribe</button>
+          </div>
+          <p class="message" data-msg="status"></p>
+        </div>
+      </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SUPABASE_URL = "https://bmbsjbuqlrwcozwfccai.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJtYnNqYnVxbHJ3Y296d2ZjY2FpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNjE2NTEsImV4cCI6MjA5MTkzNzY1MX0.MdeRiYy8GgHpEvkjgSszkHzQJZX6xFX2ajvfPMfNjhU";
+
+      const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      // ---------- state helpers ----------
+
+      function showState(name) {
+        ["state-signin", "state-signin-sent", "state-account"].forEach((id) => {
+          document.getElementById(id).hidden = id !== "state-" + name;
+        });
+      }
+
+      function setMessage(key, text, type) {
+        const el = document.querySelector(`[data-msg="${key}"]`);
+        if (!el) return;
+        el.textContent = text || "";
+        el.className = "message" + (type ? " " + type : "");
+      }
+
+      // ---------- sign-in ----------
+
+      document.getElementById("signin-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const input = document.getElementById("signin-email");
+        const email = (input.value || "").trim().toLowerCase();
+        const msg = document.getElementById("signin-message");
+        msg.textContent = "";
+        msg.className = "message";
+
+        if (!EMAIL_RE.test(email)) {
+          msg.textContent = "Please enter a valid email.";
+          msg.className = "message error";
+          return;
+        }
+
+        const btn = e.target.querySelector("button");
+        btn.disabled = true;
+        const originalText = btn.textContent;
+        btn.textContent = "Sending…";
+
+        try {
+          const { error } = await sb.auth.signInWithOtp({
+            email,
+            options: { emailRedirectTo: window.location.origin + "/account" },
+          });
+          if (error) {
+            console.error(error);
+            msg.textContent = "Something went wrong. Please try again.";
+            msg.className = "message error";
+            return;
+          }
+          showState("signin-sent");
+        } catch (err) {
+          console.error(err);
+          msg.textContent = "Something went wrong. Please try again.";
+          msg.className = "message error";
+        } finally {
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
+      });
+
+      document.getElementById("try-again").addEventListener("click", (e) => {
+        e.preventDefault();
+        showState("signin");
+      });
+
+      // ---------- authenticated account view ----------
+
+      let currentUser = null; // rows from public.users
+
+      async function loadUserRow(authUser) {
+        // First time a user signs in, we need to link their auth.users row to their public.users row
+        // by matching email. After link, RLS policies kick in.
+        const email = (authUser.email || "").toLowerCase();
+
+        // First try: fetch by auth_user_id (the happy path after first link)
+        let { data, error } = await sb
+          .from("users")
+          .select("*")
+          .eq("auth_user_id", authUser.id)
+          .maybeSingle();
+
+        if (error) {
+          console.error(error);
+          return null;
+        }
+
+        if (data) return data;
+
+        // Not linked yet — try to find by email and link
+        const linkRes = await sb
+          .from("users")
+          .update({ auth_user_id: authUser.id })
+          .eq("email", email)
+          .is("auth_user_id", null);
+
+        if (linkRes.error) {
+          console.error(linkRes.error);
+        }
+
+        // Re-fetch
+        ({ data, error } = await sb
+          .from("users")
+          .select("*")
+          .eq("auth_user_id", authUser.id)
+          .maybeSingle());
+        return data;
+      }
+
+      async function showAccountView() {
+        const session = (await sb.auth.getSession()).data.session;
+        if (!session) {
+          showState("signin");
+          return;
+        }
+
+        currentUser = await loadUserRow(session.user);
+        if (!currentUser) {
+          // Session exists but no matching public.users row — unusual, probably means
+          // the signed-in email doesn't match any subscriber. Show a hint.
+          showState("signin");
+          const msg = document.getElementById("signin-message");
+          msg.textContent = "We couldn't find a subscription for this email. Sign up at nutral.news first.";
+          msg.className = "message error";
+          return;
+        }
+
+        document.getElementById("greeting").textContent = `Welcome back${currentUser.first_name ? ", " + currentUser.first_name : ""}.`;
+        document.getElementById("display-email").textContent = currentUser.email;
+        updateStatusPill(currentUser.status);
+        document.getElementById("acc-first-name").value = currentUser.first_name || "";
+
+        const currentTopics = new Set(currentUser.topics || []);
+        document.querySelectorAll("#acc-topics input[type=checkbox]").forEach((cb) => {
+          cb.checked = currentTopics.has(cb.value);
+        });
+
+        document.getElementById("nav-signout").hidden = false;
+        showState("account");
+      }
+
+      function updateStatusPill(status) {
+        const pill = document.getElementById("status-pill");
+        const normalized = (status || "").toLowerCase();
+        pill.textContent = normalized.charAt(0).toUpperCase() + normalized.slice(1);
+        pill.className = "status-pill " + (["active", "paused", "unsubscribed"].includes(normalized) ? normalized : "active");
+
+        // Also update the pause button label
+        const pauseBtn = document.querySelector('[data-action="toggle-pause"]');
+        if (pauseBtn) {
+          pauseBtn.textContent = normalized === "paused" ? "Resume briefs" : "Pause briefs";
+        }
+      }
+
+      // ---------- save actions ----------
+
+      document.querySelector('[data-save="name"]').addEventListener("click", async () => {
+        const val = (document.getElementById("acc-first-name").value || "").trim();
+        if (!val) {
+          setMessage("name", "Please enter a name.", "error");
+          return;
+        }
+        setMessage("name", "Saving…");
+        const { error } = await sb.from("users").update({ first_name: val, updated_at: new Date().toISOString() }).eq("id", currentUser.id);
+        if (error) {
+          console.error(error);
+          setMessage("name", "Couldn't save. Please try again.", "error");
+          return;
+        }
+        currentUser.first_name = val;
+        setMessage("name", "Saved.", "success");
+      });
+
+      document.querySelector('[data-save="topics"]').addEventListener("click", async () => {
+        const topics = Array.from(document.querySelectorAll("#acc-topics input[type=checkbox]:checked")).map(
+          (cb) => cb.value
+        );
+        if (topics.length === 0) {
+          setMessage("topics", "Pick at least one topic.", "error");
+          return;
+        }
+        setMessage("topics", "Saving…");
+        const { error } = await sb.from("users").update({ topics, updated_at: new Date().toISOString() }).eq("id", currentUser.id);
+        if (error) {
+          console.error(error);
+          setMessage("topics", "Couldn't save. Please try again.", "error");
+          return;
+        }
+        currentUser.topics = topics;
+        setMessage("topics", "Saved.", "success");
+      });
+
+      document.querySelector('[data-action="toggle-pause"]').addEventListener("click", async () => {
+        const next = currentUser.status === "paused" ? "active" : "paused";
+        setMessage("status", "Updating…");
+        const { error } = await sb.from("users").update({ status: next, updated_at: new Date().toISOString() }).eq("id", currentUser.id);
+        if (error) {
+          console.error(error);
+          setMessage("status", "Couldn't update. Please try again.", "error");
+          return;
+        }
+        currentUser.status = next;
+        updateStatusPill(next);
+        setMessage("status", next === "paused" ? "Paused — briefs won't be sent until you resume." : "Resumed.", "success");
+      });
+
+      document.querySelector('[data-action="unsubscribe"]').addEventListener("click", async () => {
+        if (!confirm("Are you sure? You can always rejoin at nutral.news.")) return;
+        setMessage("status", "Unsubscribing…");
+        const { error } = await sb.rpc("unsubscribe_user", { user_uuid: currentUser.id });
+        if (error) {
+          console.error(error);
+          setMessage("status", "Couldn't unsubscribe. Please try again.", "error");
+          return;
+        }
+        currentUser.status = "unsubscribed";
+        updateStatusPill("unsubscribed");
+        setMessage("status", "You're unsubscribed. Sorry to see you go.", "success");
+      });
+
+      document.getElementById("nav-signout").addEventListener("click", async (e) => {
+        e.preventDefault();
+        await sb.auth.signOut();
+        window.location.reload();
+      });
+
+      // ---------- boot ----------
+
+      // Supabase auth events — if a magic link redirects here, session will be established
+      sb.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_IN") {
+          showAccountView();
+        }
+        if (event === "SIGNED_OUT") {
+          currentUser = null;
+          showState("signin");
+          document.getElementById("nav-signout").hidden = true;
+        }
+      });
+
+      // Initial check
+      showAccountView();
+    </script>
+  </body>
+</html>

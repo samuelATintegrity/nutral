@@ -1,0 +1,61 @@
+name: Daily briefs
+
+on:
+  schedule:
+    # 11:07 UTC every weekday = 6:07 AM ET / 4:07 AM PT
+    # Using a non-round minute keeps us off the top-of-hour congestion.
+    - cron: "7 11 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Skip TTS, uploads, and emails"
+        required: false
+        default: "false"
+      only:
+        description: "Process only one user (by email)"
+        required: false
+        default: ""
+
+concurrency:
+  group: daily-briefs
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run pipeline
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ELEVEN_API_KEY: ${{ secrets.ELEVEN_API_KEY }}
+          ELEVEN_VOICE_ID: ${{ secrets.ELEVEN_VOICE_ID }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LLM_PROVIDER: gemini
+        run: |
+          ARGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ -n "${{ github.event.inputs.only }}" ]; then
+            ARGS="$ARGS --only ${{ github.event.inputs.only }}"
+          fi
+          python -m pipeline.main $ARGS
