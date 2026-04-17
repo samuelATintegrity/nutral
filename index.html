@@ -115,6 +115,18 @@
       section {
         padding: var(--section-pad) 0;
         position: relative;
+        text-align: center;
+      }
+      section h2 {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      section .lede {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      section .stat-cite {
+        display: block;
       }
       .divider-top {
         border-top: 1px solid var(--divider);
@@ -122,7 +134,11 @@
 
       /* ---------- header / nav ---------- */
       .site-header {
-        padding: 24px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: transparent;
+        padding: 18px 0;
       }
       .nav {
         display: flex;
@@ -137,6 +153,12 @@
         color: var(--text);
         text-decoration: none;
       }
+      .wordmark--sticky .wm-letter {
+        display: inline-block;
+        opacity: 0;
+        filter: blur(10px);
+        will-change: opacity, filter;
+      }
       .nav-link {
         color: var(--text-muted);
         text-decoration: none;
@@ -145,22 +167,60 @@
       .nav-link:hover {
         color: var(--text);
       }
+      .nav-btn {
+        padding: 9px 20px;
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--text);
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background 0.15s ease, color 0.15s ease;
+      }
+      .nav-btn:hover {
+        background: var(--text);
+        color: var(--bg);
+      }
+
+      /* ---------- big brand mark ---------- */
+      .brand-mark {
+        font-family: var(--serif);
+        font-size: clamp(88px, 22vw, 240px);
+        line-height: 1;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        text-align: center;
+        margin: 0 auto 32px;
+        font-weight: 400;
+      }
+      .brand-mark .bm-letter {
+        display: inline-block;
+        opacity: 0;
+        filter: blur(16px);
+        transition: opacity 0.7s ease, filter 0.7s ease;
+        will-change: opacity, filter;
+      }
 
       /* ---------- hero ---------- */
       .hero {
         padding-top: 40px;
         padding-bottom: 88px;
+        text-align: center;
       }
       .hero h1 {
         font-size: clamp(40px, 7vw, 76px);
         max-width: 16ch;
-        margin-bottom: 20px;
+        margin: 0 auto 20px;
       }
       .hero .subhead {
         font-size: clamp(17px, 1.5vw, 20px);
         color: var(--text-muted);
         max-width: 56ch;
-        margin-bottom: 36px;
+        margin: 0 auto 36px;
+      }
+      .hero .signup-steps {
+        margin: 0 auto;
       }
       .tagline-accent {
         position: relative;
@@ -173,7 +233,7 @@
         background-position: left center;
         background-size: 0% 100%;
         padding: 0 0.18em 0.04em;
-        animation: tagline-wipe 2s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+        animation: tagline-wipe 2s cubic-bezier(0.22, 1, 0.36, 1) 2s forwards;
       }
       .tagline-accent::before {
         content: attr(data-text);
@@ -186,7 +246,7 @@
         white-space: nowrap;
         pointer-events: none;
         clip-path: inset(0 100% 0 0);
-        animation: tagline-reveal 2s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+        animation: tagline-reveal 2s cubic-bezier(0.22, 1, 0.36, 1) 2s forwards;
       }
       @keyframes tagline-wipe {
         to { background-size: 100% 100%; }
@@ -195,15 +255,79 @@
         to { clip-path: inset(0 0 0 0); }
       }
 
+      /* Heading word: letters fade/blur in L→R, then a bar wipes over */
+      .heading-anim {
+        position: relative;
+        display: inline-block;
+        isolation: isolate;
+      }
+      .heading-anim .rl {
+        display: inline-block;
+        opacity: 0;
+        filter: blur(10px);
+        transition: opacity 0.6s ease, filter 0.6s ease;
+        position: relative;
+        z-index: 0;
+      }
+      .reveal.is-visible .heading-anim .rl {
+        opacity: 1;
+        filter: blur(0);
+      }
+      .reveal.is-visible .heading-anim .rl:nth-child(1) { transition-delay: 0.05s; }
+      .reveal.is-visible .heading-anim .rl:nth-child(2) { transition-delay: 0.15s; }
+      .reveal.is-visible .heading-anim .rl:nth-child(3) { transition-delay: 0.25s; }
+      .reveal.is-visible .heading-anim .rl:nth-child(4) { transition-delay: 0.35s; }
+      .reveal.is-visible .heading-anim .rl:nth-child(5) { transition-delay: 0.45s; }
+      .reveal.is-visible .heading-anim .rl:nth-child(6) { transition-delay: 0.55s; }
+      .reveal.is-visible .heading-anim .rl:nth-child(7) { transition-delay: 0.65s; }
+      .reveal.is-visible .heading-anim .rl:nth-child(8) { transition-delay: 0.75s; }
+      /* Black bar behind the letters that wipes in L→R */
+      .heading-anim::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -0.18em;
+        right: -0.18em;
+        background-image: linear-gradient(var(--text), var(--text));
+        background-repeat: no-repeat;
+        background-position: left center;
+        background-size: 0% 100%;
+        z-index: -1;
+        pointer-events: none;
+      }
+      /* White duplicate of the word, revealed L→R as the bar passes */
+      .heading-anim::before {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        color: var(--bg);
+        clip-path: inset(0 100% 0 0);
+        white-space: nowrap;
+        z-index: 1;
+        pointer-events: none;
+        line-height: inherit;
+      }
+      .reveal.is-visible .heading-anim::after {
+        animation: tagline-wipe 1.8s cubic-bezier(0.22, 1, 0.36, 1) 1.4s forwards;
+      }
+      .reveal.is-visible .heading-anim::before {
+        animation: tagline-reveal 1.8s cubic-bezier(0.22, 1, 0.36, 1) 1.4s forwards;
+      }
+
       /* ---------- signup form ---------- */
       .signup-form {
         display: flex;
-        gap: 8px;
-        max-width: 520px;
-        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        max-width: 420px;
+        margin: 0 auto;
       }
       .signup-form input[type="email"] {
-        flex: 1 1 240px;
+        width: 100%;
         min-width: 0;
         padding: 14px 22px;
         font-family: inherit;
@@ -220,6 +344,7 @@
         box-shadow: 0 0 0 3px var(--accent-soft);
       }
       .signup-form button {
+        width: 100%;
         padding: 14px 28px;
         background: var(--accent);
         color: var(--bg);
@@ -238,6 +363,16 @@
       .signup-form button:disabled {
         opacity: 0.6;
         cursor: wait;
+      }
+
+      /* Hero continue button: transparent with thin black outline */
+      .hero .signup-form button {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--text);
+      }
+      .hero .signup-form button:hover {
+        background: var(--accent-soft);
       }
       .form-note {
         margin-top: 14px;
@@ -272,6 +407,20 @@
         border: 1px solid var(--accent);
         border-radius: var(--radius-lg);
         max-width: 520px;
+        margin: 0 auto;
+      }
+      /* Hero centering for step-2 (revealed after email) */
+      .hero .step-field input[type="text"] {
+        align-self: center;
+        width: 100%;
+      }
+      .hero .topic-grid {
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+      }
+      .hero .step-submit {
+        align-self: center;
       }
       .form-success-state h3 {
         font-size: 22px;
@@ -502,7 +651,72 @@
         color: var(--text-muted);
       }
 
+      /* ---------- process ---------- */
+      .process {
+        border-bottom: 1px solid var(--divider);
+      }
+      .process h2 {
+        margin-bottom: 28px;
+      }
+      .filter-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        font-family: var(--serif);
+        font-size: clamp(32px, 4vw, 48px);
+        line-height: 1.1;
+        letter-spacing: -0.015em;
+        color: var(--text);
+      }
+      .filter-word {
+        position: relative;
+        display: inline-block;
+        padding: 0 0.18em 0.04em;
+        color: var(--text);
+        background-image: linear-gradient(var(--text), var(--text));
+        background-repeat: no-repeat;
+        background-position: left center;
+        background-size: 0% 100%;
+      }
+      .filter-word::before {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        padding: inherit;
+        color: var(--bg);
+        white-space: nowrap;
+        pointer-events: none;
+        clip-path: inset(0 100% 0 0);
+        line-height: inherit;
+      }
+      .process.is-firing .filter-list li:nth-child(1) .filter-word {
+        animation: tagline-wipe 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0s forwards;
+      }
+      .process.is-firing .filter-list li:nth-child(1) .filter-word::before {
+        animation: tagline-reveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0s forwards;
+      }
+      .process.is-firing .filter-list li:nth-child(2) .filter-word {
+        animation: tagline-wipe 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
+      }
+      .process.is-firing .filter-list li:nth-child(2) .filter-word::before {
+        animation: tagline-reveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
+      }
+      .process.is-firing .filter-list li:nth-child(3) .filter-word {
+        animation: tagline-wipe 1.2s cubic-bezier(0.22, 1, 0.36, 1) 1.2s forwards;
+      }
+      .process.is-firing .filter-list li:nth-child(3) .filter-word::before {
+        animation: tagline-reveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) 1.2s forwards;
+      }
+
       /* ---------- how it works ---------- */
+      .how-it-works {
+        background: var(--bg-elev);
+      }
       .steps {
         list-style: none;
         padding: 0;
@@ -530,6 +744,29 @@
         color: var(--accent);
         display: block;
         margin-bottom: 12px;
+      }
+      .step-icon {
+        width: 44px;
+        height: 44px;
+        color: var(--accent);
+        margin: 0 auto 16px;
+        display: block;
+      }
+      .step-icon-group {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .step-icon-group .step-icon {
+        margin: 0;
+      }
+      .step-icon-plus {
+        font-family: var(--serif);
+        font-size: 28px;
+        color: var(--accent);
+        line-height: 1;
       }
       .step h3 {
         font-size: 22px;
@@ -675,6 +912,14 @@
         border-color: #7a9c80;
         box-shadow: 0 0 0 3px rgba(122, 156, 128, 0.2);
       }
+      .cta-footer .signup-form button {
+        background: transparent;
+        color: var(--bg);
+        border: 1px solid var(--bg);
+      }
+      .cta-footer .signup-form button:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
       .cta-footer .form-note {
         color: #c9c6bf;
       }
@@ -782,8 +1027,8 @@
   <body>
     <header class="site-header">
       <div class="container nav">
-        <a href="#" class="wordmark" aria-label="Nūtral home">Nūtral</a>
-        <a href="#join" class="nav-link">Sign up</a>
+        <a href="#" class="wordmark wordmark--sticky" aria-label="Nūtral home"><span class="wm-letter">N</span><span class="wm-letter">ū</span><span class="wm-letter">t</span><span class="wm-letter">r</span><span class="wm-letter">a</span><span class="wm-letter">l</span></a>
+        <a href="#join" class="nav-btn">Subscribe</a>
       </div>
     </header>
 
@@ -791,6 +1036,7 @@
       <!-- ============== HERO ============== -->
       <section class="hero" id="join">
         <div class="container">
+          <div class="brand-mark" aria-label="Nūtral"><span class="bm-letter">N</span><span class="bm-letter">ū</span><span class="bm-letter">t</span><span class="bm-letter">r</span><span class="bm-letter">a</span><span class="bm-letter">l</span></div>
           <!--
             Headline options — swap freely:
               "Your news. No outrage included."
@@ -885,16 +1131,11 @@
         <div class="container">
           <div class="problem-layout problem-layout--single">
             <div>
-              <h2>The news hits women hard — and science agrees.</h2>
+              <h2><span class="heading-anim" data-text="Negative"><span class="rl">N</span><span class="rl">e</span><span class="rl">g</span><span class="rl">a</span><span class="rl">t</span><span class="rl">i</span><span class="rl">v</span><span class="rl">e</span></span> news is a primer.</h2>
               <p class="lede" style="margin-bottom: 20px;">
-                In a controlled study, simply reading negative news increased stress reactivity,
-                measured through cortisol, the body's primary stress hormone. The real effect
-                came later.
-              </p>
-              <p class="lede" style="margin-bottom: 20px;">
-                Women who consumed negative news didn't just feel stressed in the moment. They
-                became more reactive to future stress. When exposed to an unrelated stressor,
-                their cortisol response was significantly higher.
+                A peer-reviewed study found that just 10 minutes of negative news primes your
+                body to overreact to every stressor that follows — for the rest of the day. We
+                built something different.
               </p>
               <cite class="stat-cite">
                 — Marin et al.,
@@ -910,80 +1151,55 @@
         </div>
       </section>
 
-      <!-- ============== HOW IT WORKS ============== -->
-      <section>
+      <!-- ============== PROCESS ============== -->
+      <section class="process">
         <div class="container">
-          <p class="eyebrow">How it works</p>
-          <h2>Three steps. Then your mornings are quieter.</h2>
-          <ol class="steps">
-            <li class="step">
-              <span class="step-num">01</span>
-              <h3>Pick your topics</h3>
-              <p>Five categories at launch. Fifty-plus coming soon. Take only what you want.</p>
-            </li>
-            <li class="step">
-              <span class="step-num">02</span>
-              <h3>Get your brief</h3>
-              <p>Weekday mornings, delivered to your inbox. No Saturday spam.</p>
-            </li>
-            <li class="step">
-              <span class="step-num">03</span>
-              <h3>Listen or read</h3>
-              <p>Short audio and matching newsletter, personalized with your name.</p>
-            </li>
-          </ol>
+          <h2>We gather the news, and filter it for you:</h2>
+          <ul class="filter-list">
+            <li><span class="filter-word" data-text="No clickbait">No clickbait</span></li>
+            <li><span class="filter-word" data-text="No bias">No bias</span></li>
+            <li><span class="filter-word" data-text="No rage">No rage</span></li>
+          </ul>
         </div>
       </section>
 
-      <!-- ============== FEATURES ============== -->
-      <section class="features">
+      <!-- ============== HOW IT WORKS ============== -->
+      <section class="how-it-works">
         <div class="container">
-          <p class="eyebrow">What you get</p>
-          <h2>Built for your mornings.</h2>
-          <p class="lede">
-            Clear, calm news that respects your time. Everything is included, always free.
-          </p>
-
-          <div class="feature-grid">
-            <div class="feature">
-              <svg
-                class="feature-icon"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M2.25 6.75A2.25 2.25 0 014.5 4.5h15a2.25 2.25 0 012.25 2.25v10.5A2.25 2.25 0 0119.5 19.5h-15a2.25 2.25 0 01-2.25-2.25V6.75z"
-                />
+          <p class="eyebrow">How it works</p>
+          <h2>Three steps to an informed, yet calm, day.</h2>
+          <ol class="steps">
+            <li class="step">
+              <svg class="step-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75A2.25 2.25 0 014.5 4.5h15a2.25 2.25 0 012.25 2.25v10.5A2.25 2.25 0 0119.5 19.5h-15a2.25 2.25 0 01-2.25-2.25V6.75z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.75 7.5l9.25 7 9.25-7" />
               </svg>
-              <h3>Daily newsletter</h3>
-              <p>Delivered to your inbox. Your topics on your terms.</p>
-            </div>
-
-            <div class="feature">
-              <svg
-                class="feature-icon"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M19 11a7 7 0 01-14 0m7 7v3m-4 0h8M12 14a3 3 0 01-3-3V6a3 3 0 116 0v5a3 3 0 01-3 3z"
-                />
+              <h3>Enter your email</h3>
+            </li>
+            <li class="step">
+              <svg class="step-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.5 4h9A2.5 2.5 0 0119 6.5v11A2.5 2.5 0 0116.5 20h-9A2.5 2.5 0 015 17.5v-11A2.5 2.5 0 017.5 4z" />
               </svg>
-              <h3>Personalized audio</h3>
-              <p>Your newsletter, delivered hands and eyes free. Listen from anywhere, no account needed.</p>
-            </div>
-          </div>
+              <h3>Pick your topics</h3>
+            </li>
+            <li class="step">
+              <span class="step-icon-group" aria-hidden="true">
+                <svg class="step-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 3h9l4 4v14a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h8M8 15h8M8 18h5" />
+                </svg>
+                <span class="step-icon-plus">+</span>
+                <svg class="step-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 18V6l10-2v12" />
+                  <circle cx="7" cy="18" r="2.2" />
+                  <circle cx="17" cy="16" r="2.2" />
+                </svg>
+              </span>
+              <h3>Get your brief</h3>
+              <p>Weekday mornings, listen or read from anywhere, no account needed.</p>
+            </li>
+          </ol>
         </div>
       </section>
 
@@ -1033,6 +1249,14 @@
     </footer>
 
     <!-- ============== SCRIPTS ============== -->
+    <script>
+      // Always start at the top on load/refresh.
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+      window.addEventListener("load", () => window.scrollTo(0, 0));
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
       // =======================================================
@@ -1214,30 +1438,118 @@
         }
       }
 
-      // Scroll fade-in for section contents
-      (function setupReveal() {
-        const targets = document.querySelectorAll(
-          "section .container > *, .problem-layout > *, .steps .step, .feature-grid .feature"
+      // Brand-mark entrance: big "Nūtral" fades in L→R, then the sticky
+      // header wordmark fades in R→L. Both stay visible after.
+      (function setupBrandMark() {
+        const bigLetters = Array.from(
+          document.querySelectorAll(".brand-mark .bm-letter")
         );
-        targets.forEach((el) => el.classList.add("reveal"));
+        const stickyLetters = Array.from(
+          document.querySelectorAll(".wordmark--sticky .wm-letter")
+        );
+        if (!bigLetters.length && !stickyLetters.length) return;
 
-        if (!("IntersectionObserver" in window)) {
-          targets.forEach((el) => el.classList.add("is-visible"));
+        // Give the sticky letters a transition (they don't have one by default)
+        stickyLetters.forEach((el) => {
+          el.style.transition = "opacity 0.6s ease, filter 0.6s ease";
+        });
+
+        // Big letters: left → right
+        const bigStagger = 110;
+        const bigBase = 200;
+        bigLetters.forEach((el, i) => {
+          setTimeout(() => {
+            el.style.opacity = "1";
+            el.style.filter = "blur(0)";
+          }, bigBase + i * bigStagger);
+        });
+
+        // Sticky letters wait for the user's first scroll, then fade in
+        // right → left and stay visible.
+        let stickyTriggered = false;
+        const triggerSticky = () => {
+          if (stickyTriggered) return;
+          stickyTriggered = true;
+          const stickyStagger = 90;
+          stickyLetters
+            .slice()
+            .reverse()
+            .forEach((el, i) => {
+              setTimeout(() => {
+                el.style.opacity = "1";
+                el.style.filter = "blur(0)";
+              }, i * stickyStagger);
+            });
+          window.removeEventListener("scroll", onScrollTrigger);
+        };
+        const onScrollTrigger = () => {
+          if (window.scrollY > 10) triggerSticky();
+        };
+        window.addEventListener("scroll", onScrollTrigger, { passive: true });
+        // If the page loads already scrolled (e.g. anchor link), trigger now.
+        if (window.scrollY > 10) triggerSticky();
+      })();
+
+      // Process section: fire the filter-word swipes when the section
+      // crosses into the top third of the viewport.
+      (function setupProcessAnim() {
+        const section = document.querySelector(".process");
+        if (!section || !("IntersectionObserver" in window)) {
+          section?.classList.add("is-firing");
           return;
         }
-
         const io = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
-                entry.target.classList.add("is-visible");
-                io.unobserve(entry.target);
+                section.classList.add("is-firing");
+                io.disconnect();
               }
             });
           },
-          { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+          // Trigger as soon as the section begins entering the viewport.
+          { rootMargin: "0px 0px -20% 0px", threshold: 0 }
         );
-        targets.forEach((el) => io.observe(el));
+        io.observe(section);
+      })();
+
+      // Scroll fade-in for section contents.
+      // The hero holds focus alone for 6 seconds before anything below
+      // begins to reveal as it enters the viewport.
+      (function setupReveal() {
+        const HERO_HOLD_MS = 6000;
+        const heroContainer = document.querySelector(".hero");
+        const targets = Array.from(
+          document.querySelectorAll(
+            "section .container > *, .problem-layout > *, .steps .step, .feature-grid .feature"
+          )
+        ).filter((el) => {
+          if (el.classList.contains("brand-mark")) return false;
+          if (heroContainer && heroContainer.contains(el)) return false;
+          return true;
+        });
+        targets.forEach((el) => el.classList.add("reveal"));
+
+        const activate = () => {
+          if (!("IntersectionObserver" in window)) {
+            targets.forEach((el) => el.classList.add("is-visible"));
+            return;
+          }
+          const io = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("is-visible");
+                  io.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+          );
+          targets.forEach((el) => io.observe(el));
+        };
+
+        setTimeout(activate, HERO_HOLD_MS);
       })();
 
       // Wire it up
