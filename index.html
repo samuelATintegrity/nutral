@@ -134,9 +134,6 @@
 
       /* ---------- header / nav ---------- */
       .site-header {
-        position: sticky;
-        top: 0;
-        z-index: 100;
         background: transparent;
         padding: 18px 0;
       }
@@ -204,7 +201,7 @@
 
       /* ---------- hero ---------- */
       .hero {
-        padding-top: 40px;
+        padding-top: 112px;
         padding-bottom: 88px;
         text-align: center;
       }
@@ -619,6 +616,7 @@
         .problem-layout--single {
           grid-template-columns: 1fr;
           max-width: 68ch;
+          margin-inline: auto;
         }
       }
       .stat-card {
@@ -892,6 +890,12 @@
         color: var(--bg);
         margin: 0 auto 16px;
       }
+      .cta-footer h2 .strike {
+        color: rgba(247, 244, 236, 0.45);
+        text-decoration: line-through;
+        text-decoration-thickness: 2px;
+        text-decoration-color: rgba(247, 244, 236, 0.7);
+      }
       .cta-footer .lede {
         color: #c9c6bf;
         margin: 0 auto 32px;
@@ -988,7 +992,7 @@
           --section-pad: 64px;
         }
         .hero {
-          padding-top: 24px;
+          padding-top: 72px;
           padding-bottom: 56px;
         }
         .stat-card {
@@ -1025,13 +1029,6 @@
     </style>
   </head>
   <body>
-    <header class="site-header">
-      <div class="container nav">
-        <a href="#" class="wordmark wordmark--sticky" aria-label="Nūtral home"><span class="wm-letter">N</span><span class="wm-letter">ū</span><span class="wm-letter">t</span><span class="wm-letter">r</span><span class="wm-letter">a</span><span class="wm-letter">l</span></a>
-        <a href="#join" class="nav-btn">Subscribe</a>
-      </div>
-    </header>
-
     <main>
       <!-- ============== HERO ============== -->
       <section class="hero" id="join">
@@ -1167,7 +1164,7 @@
       <section class="how-it-works">
         <div class="container">
           <p class="eyebrow">How it works</p>
-          <h2>Three steps to an informed, yet calm, day.</h2>
+          <h2>Three steps to an informed calm day.</h2>
           <ol class="steps">
             <li class="step">
               <svg class="step-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
@@ -1197,7 +1194,6 @@
                 </svg>
               </span>
               <h3>Get your brief</h3>
-              <p>Weekday mornings, listen or read from anywhere, no account needed.</p>
             </li>
           </ol>
         </div>
@@ -1206,9 +1202,9 @@
       <!-- ============== CTA FOOTER ============== -->
       <section class="cta-footer">
         <div class="container">
-          <h2>Start your mornings calmer.</h2>
+          <h2>Subscribe for your unbiased, <s class="strike">neutral</s> Nūtral news brief.</h2>
           <p class="lede">
-            Sign up and your first brief arrives the next weekday morning.
+            Your first brief arrives the next weekday morning.
           </p>
 
           <form class="signup-form" data-form="footer" novalidate>
@@ -1240,9 +1236,9 @@
           <span class="wordmark">Nūtral</span>
         </div>
         <nav class="footer-nav" aria-label="Footer">
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">Contact</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="/contact">Contact</a>
         </nav>
         <p class="footer-copy">© 2026 Nūtral</p>
       </div>
@@ -1517,7 +1513,7 @@
       // The hero holds focus alone for 6 seconds before anything below
       // begins to reveal as it enters the viewport.
       (function setupReveal() {
-        const HERO_HOLD_MS = 6000;
+        const HERO_HOLD_MS = 4000;
         const heroContainer = document.querySelector(".hero");
         const targets = Array.from(
           document.querySelectorAll(

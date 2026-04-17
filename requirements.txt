@@ -7,4 +7,4 @@ supabase>=2.9.0
 resend>=2.5.0
 pydub>=0.25.1
 static-ffmpeg>=3.0
-audioop-lts>=0.2.2
+audioop-lts>=0.2.2; python_version >= "3.13"

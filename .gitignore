@@ -19,3 +19,10 @@ desktop.ini
 
 # Vercel
 .vercel/
+
+# Python
+__pycache__/
+*.pyc
+
+# Claude Code
+.claude/
